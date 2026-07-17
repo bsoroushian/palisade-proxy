@@ -12,21 +12,25 @@ An enterprise-grade, high-throughput HTTPS reverse proxy engineered to enforce s
 
 Palisade sits at the network edge, acting as a defensive shield for internal microservices. It intercepts raw traffic, performs lightweight, non-blocking deep packet inspections, and drops malicious anomalies before they can pollute downstream application runtimes.
 
-[ Public Internet ]
-│  (Malicious Payload / Injections)
-▼
+ ```text
+       [ Public Internet ]
+                │
+                │ (Malicious Payload / Injections)
+                ▼
 ┌──────────────────────────────┐
-│  palisade-core (HTTPS:8443)  │  ◄── Automated Lifecycle Hook
-├──────────────────────────────┤      (palisade-perimeter-tests)
-│  • Header Count & Size Guard │
-│  • Httpoxy Mitigation Layer  │
-│  • Query Param Length Filter │
-└──────────────┬───────────────┘│  
-(Sanitized & Verified Traffic)
-▼
+│  palisade-core (HTTPS:8443)  │ ◄── Automated Lifecycle Hook
+├──────────────────────────────┤     (palisade-perimeter-tests)
+│ • Header Count & Size Guard  │
+│ • Httpoxy Mitigation Layer   │
+│ • Query Param Length Filter  │
+└──────────────┬───────────────┘
+                │
+                │ (Sanitized & Verified Traffic)
+                ▼
 ┌──────────────────────────────┐
-│ catalogue-service (HTTP:9999)│  ◄── Mock Downstream Target
+│ catalogue-service (HTTP:9999)│ ◄── Mock Downstream Target
 └──────────────────────────────┘
+```
 
  ### 🛡️ Core Defensive Capabilities
 * **HTTP OxyFile (Httpoxy) Attack Mitigation:** Explicitly blocks and strips incoming `Proxy` headers at the gateway edge to prevent remote code execution and downstream connection hijacking.
