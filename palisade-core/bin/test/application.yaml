@@ -1,3 +1,0 @@
-palisade:
-  targetHost: "http://localhost:9999" # Mock destination
-  allowedMethods: ["get, post"]

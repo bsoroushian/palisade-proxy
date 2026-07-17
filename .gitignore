@@ -3,6 +3,10 @@
 build/
 !gradle-wrapper.jar
 .gradle-wrapper/
+# Additional compiler and local IDE runner artifacts
+.kotlin/
+bin/
+
 
 # JetBrains IntelliJ IDEA configuration
 .idea/
