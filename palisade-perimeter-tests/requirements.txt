@@ -1,0 +1,5 @@
+pytest==8.3.4
+requests==2.32.3
+urllib3==2.3.0
+psutil==6.1.1
+

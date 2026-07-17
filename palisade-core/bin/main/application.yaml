@@ -1,0 +1,27 @@
+ktor:
+  deployment:
+    sslPort: "${SSL_PORT:8443}"
+    maxHeaderSize: "${KTOR_MAX_HEADER_SIZE:16384}"
+  application:
+    modules:
+      - com.palisade.core.ApplicationKt.module
+  security:
+    ssl:
+      keyStore: "build/temporary-dev.jks"
+      keyAlias: "temp-dev-key"
+      keyStorePassword: "password"
+      privateKeyPassword: "password"
+
+palisade:
+  targetHost: "${PALISADE_TARGET_HOST}"
+  allowedMethods: '${PALISADE_ALLOWED_METHODS:GET, POST, PUT, PATCH, HEAD, OPTIONS}'
+  superAdminPasswordHash: '${PALISADE_ADMIN_PASSWORD_HASH:$2a$12$E6tjJh3qbsgF4AmvGm3rIudgNXFLB2hkKPVtnrgWWBAkZjOrMw7aS}'
+  verifierParams:
+    maxHeaderSize: "${PALISADE_GUARD_MAX_HEADER_SIZE:8192}"
+    maxHeaderCount: "${PALISADE_GUARD_MAX_HEADER_COUNT:50}"    
+    strictSingleValueHeaders: '${PALISADE_GUARD_STRICT_SINGLE_VALUE_HEADERS:Host, Content-Type, Content-Length, Authorization}'
+    forbiddenHeaders: '${PALISADE_GUARD_FORBIDDEN_HEADERS:Proxy, X-Http-Method-Override, X-Original-Url, X-Rewrite-Url}'
+    maxQueryParamCount: "${PALISADE_GUARD_MAX_QUERY_PARAM_COUNT:20}"
+    maxQueryParamValueLength: "${PALISADE_GUARD_MAX_QUERY_PARAM_VALUE_LENGTH:512}"
+    allowedPathPrefixes: '${PALISADE_GUARD_ALLOWED_PATH_PREFIXES:}'
+    forbiddenPathSegments: '${PALISADE_GUARD_FORBIDDEN_PATH_SEGMENTS:/../, //, /./, .\}'

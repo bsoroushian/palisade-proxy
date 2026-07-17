@@ -1,0 +1,337 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Mock Catalogue Service",
+    "description": "Complete mock backend service for parsing schemas, payload structures, path variables, and testing security validation constraints on an API Gateway or WAF.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "/v1",
+      "description": "Relative server path to support agnostic proxy forwarding and gateway routing logic."
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BasicAuth": {
+        "type": "http",
+        "scheme": "basic",
+        "description": "Basic Access Authentication using credentials validated via Ktor basic authentication."
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "email"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Alice"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "alice@example.com"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true,
+            "example": "+1-212-555-1256"
+          },
+          "birthDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true,
+            "example": "1983-01-23"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateUserRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "email"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Alice"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "alice@example.com"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true,
+            "example": "+1-212-555-1256"
+          },
+          "birthDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true,
+            "example": "1983-01-23"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "paths": {
+    "/user": {
+      "get": {
+        "summary": "Retrieve all users",
+        "description": "Fetches an array containing all user entries recorded within the catalogue context.",
+        "responses": {
+          "200": {
+            "description": "A comprehensive list of user profiles.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create or retrieve a user record",
+        "description": "Validates properties to register a user. If the email structure already exists, it maps the request back to the matched historical record to maintain single entity integrity.",
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User profile successfully instantiated or resolved from record lookups.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing, invalid, or malformed Basic Authentication credentials."
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "summary": "Retrieve a single user identity profile",
+        "description": "Inspects dataset criteria to match a specific unique primary numerical identifier.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The unique numerical database primary key ID assigned to the specific user profile.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The target matching user dataset domain model.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The route segment reference is unmapped, missing, or cannot be successfully evaluated as a valid integer index parsing context.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "id must be an integer"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The index query successfully parsed into an integer context but failed to match an ongoing entity mapping reference.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "User not found"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update mutable user profile definitions",
+        "description": "Enforces complete resource replacement context constraints, verifies matching profile data immutability, and executes an authenticating principal checking constraint logic boundary.",
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The target resource primary identity mapping constraint value context.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The target matching user dataset domain model.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Input format syntactic error or invalid manipulation attempts over non-mutable key properties.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Invalid request payload profile data"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The request lacks essential validation values or holds incorrect authorization formats."
+          },
+          "403": {
+            "description": "The authenticated principal identity mismatches the resource value map permissions context boundaries.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "You can only update your own profile"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The database cannot resolve a valid entity matching the provided identity mapping payload criteria.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "User not found"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Destructive resource eviction for an identity profile",
+        "description": "Parses path constraints to locate a profile, applies a principal validation guard check, and completely flags the entity for database layer eviction.",
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The unique numerical identifier pointing to the profile intended for permanent deletion.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Profile successfully evicted from the data mapping layers. No payload is returned."
+          },
+          "400": {
+            "description": "The identity key segment is poorly formatted or fails integer conversion parsing.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "id must be an integer"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or fundamentally invalid access validation credentials context header."
+          },
+          "403": {
+            "description": "Authorization token validation mismatch. Cross-tenant profile deletion attempts are prohibited.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "You can only delete your own profile"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The targeted user account entity index reference cannot be discovered inside the volatile storage scope.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "User not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

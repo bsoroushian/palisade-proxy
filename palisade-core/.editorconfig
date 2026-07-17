@@ -1,0 +1,7 @@
+root = true
+
+[*.{kt,kts}]
+ktlint_standard_no-wildcard-imports = disabled
+# Tells ktlint to auto-correct and expand wildcard imports into explicit ones
+ij_kotlin_name_count_to_use_star_import = 99
+ij_kotlin_name_count_to_use_star_import_for_members = 99

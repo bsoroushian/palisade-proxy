@@ -1,0 +1,21 @@
+ktor:
+  deployment:
+    sslPort: 8443
+    maxHeaderSize: 16384
+  application:
+    modules:
+      - com.palisade.core.ApplicationKt.module
+  security:
+    ssl:
+      keyStore: "build/temporary-dev.jks"
+      keyAlias: "temp-dev-key"
+      keyStorePassword: "password"
+      privateKeyPassword: "password"
+
+palisade:
+  targetHost: "http://localhost:8081"
+  allowedMethods: "get, post, put, patch, head"
+  verifierParams:
+    allowedPathPrefixes: "/v1/, /palisade-test-loopback/"
+    maxHeaderCount: 30
+

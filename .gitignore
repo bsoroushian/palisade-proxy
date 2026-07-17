@@ -1,0 +1,27 @@
+# Gradle & Java build artifacts (Applies recursively to subfolders)
+.gradle/
+build/
+!gradle-wrapper.jar
+.gradle-wrapper/
+
+# JetBrains IntelliJ IDEA configuration
+.idea/
+*.iml
+*.iws
+
+# Visual Studio Code configuration
+.vscode/
+*.code-workspace
+
+# Python virtual environment, artifacts, and testing cache
+venv/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.pytest_cache**/
+
+# OS / Environment variables containing keys/passwords
+.env
+*.local
+.DS_Store
