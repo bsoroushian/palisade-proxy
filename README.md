@@ -28,7 +28,7 @@ Palisade sits at the network edge, acting as a defensive shield for internal mic
                 │ (Sanitized & Verified Traffic)
                 ▼
 ┌──────────────────────────────┐
-│ catalogue-service (HTTP:9999)│ ◄── Mock Downstream Target
+│ catalogue-service (HTTP:8081)│ ◄── Mock Downstream Target
 └──────────────────────────────┘
 ```
 
